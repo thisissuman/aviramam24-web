@@ -3,7 +3,7 @@ import { IoMdMenu, IoMdClose, IoIosCall } from "react-icons/io";
 import logo from "../src/assets/logo.png";
 import aviramam24 from "../src/assets/aviramam24.svg";
 import { useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const user = useSelector((state) => state.user);
@@ -111,14 +111,17 @@ const Header = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-99 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a
-                  href="/login"
-                  onClick={() => {
-                    localStorage.removeItem("token"); // Adjust the key if needed
+                <Link
+                  to="/login"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.cookie =
+                      "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    window.location.replace("/login");
                   }}
                 >
                   Logout
-                </a>
+                </Link>
               </li>
               <li>
                 <a>Settings</a>

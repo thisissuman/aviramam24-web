@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 import { BASE_URL } from "../src/constant/env";
 
 const LoginPage = () => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,9 +38,9 @@ const LoginPage = () => {
       credentials: "include",
     };
 
+    const response = await fetch(BASE_URL + "/login", requestOptions);
     try {
-      const response = await fetch(BASE_URL + "/login", requestOptions); // this one not working
-
+      console.log(response);
       const data = await response.json();
 
       if (response.ok) {
