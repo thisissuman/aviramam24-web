@@ -39,7 +39,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="pt-8 pb-20 md:pt-5 md:pb-10 bg-[linear-gradient(to_bottom,#EAEEFE,#e3cc70)] overflow-x-clip">
+    <section className=" md:pt-5 md:pb-10 bg-[linear-gradient(to_bottom,#EAEEFE,#e3cc70)] overflow-x-clip">
       {/* Confetti and Welcome Message */}
       {user?.user?.firstName && showConfetti && (
         <Confetti width={width} height={height} numberOfPieces={300} />
@@ -51,7 +51,7 @@ const Hero = () => {
           </h2>
         </div>
       )}
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto pt-16">
         <div className="flex flex-col md:flex-row items-center">
           {/* Left Side - Text Content */}
           <div className="md:w-[478px] mb-56 ml-10">

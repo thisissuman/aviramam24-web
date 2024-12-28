@@ -11,10 +11,12 @@ import { BASE_URL } from "../src/constant/env";
 import { addUser } from "../src/utils/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 const Body = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
-  
+
+  const userData = useSelector((state) => state.user);
   const fetchUser = async () => {
     try {
       const response = await fetch(`${BASE_URL}/profile/view`, {
@@ -36,7 +38,9 @@ const Body = () => {
   };
 
   useEffect(() => {
-    fetchUser();
+    if (!userData) {
+      fetchUser();
+    }
   }, []);
 
   return (

@@ -3,11 +3,33 @@ import { IoMdMenu, IoMdClose, IoIosCall } from "react-icons/io";
 import logo from "../src/assets/logo.png";
 import aviramam24 from "../src/assets/aviramam24.svg";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { removeUser } from "../src/utils/userSlice";
+import { BASE_URL } from "../src/constant/env";
 import { Link } from "react-router-dom";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const user = useSelector((state) => state.user);
 
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+  const logouthandler = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/logout`, {
+        method: "POST", // Change to POST since backend uses post route
+        credentials: "include", // Important for sending cookies
+      });
+      console.log(response);
+      if (response.ok) {
+        dispatch(removeUser());
+        nav("/login");
+      } else {
+        console.log("Logout failed");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
   return (
     <>
       {/* Top bar */}
@@ -24,7 +46,15 @@ const Header = () => {
       <nav className="navbar bg-base-100 shadow-md">
         <div className="flex-1 flex items-center">
           {/* Logo */}
-          <img height={80} width={80} src={logo} alt="Logo" className="mr-3" />
+          <Link>
+            <img
+              height={80}
+              width={80}
+              src={logo}
+              alt="Logo"
+              className="mr-3"
+            />
+          </Link>
           <img
             src={aviramam24}
             alt="Aviraman24"
@@ -111,23 +141,13 @@ const Header = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-99 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <Link
-                  to="/login"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.cookie =
-                      "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    window.location.replace("/login");
-                  }}
-                >
-                  Logout
-                </Link>
+                <Link onClick={logouthandler}>Logout</Link>
+              </li>
+              <li>
+                <Link to="/profile/view">Profile</Link>
               </li>
               <li>
                 <a>Settings</a>
-              </li>
-              <li>
-                <a>Profile</a>
               </li>
             </ul>
           </div>
