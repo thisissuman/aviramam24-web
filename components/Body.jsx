@@ -21,11 +21,9 @@ const Body = () => {
         method: "GET",
         credentials: "include",
       });
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          nav("/login");
-        }
+      console.log(response.status);
+      if (!response.ok && response.status === 401) {
+        nav("/login");
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
