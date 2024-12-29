@@ -40,7 +40,7 @@ const LoginPage = () => {
 
     const response = await fetch(BASE_URL + "/login", requestOptions);
     try {
-      console.log(response);
+      
       const data = await response.json();
 
       if (response.ok) {

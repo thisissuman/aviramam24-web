@@ -45,7 +45,7 @@ const SignUpPage = () => {
         password: values.password,
       }),
     };
-    console.log(requestOptions);
+    
     fetch("http://localhost:3000/signup", requestOptions)
       .then((response) => {
         if (response.ok) {

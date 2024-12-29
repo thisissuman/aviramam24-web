@@ -10,16 +10,19 @@ import { BASE_URL } from "../src/constant/env";
 import { Link } from "react-router-dom";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const userData = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const nav = useNavigate();
+
+  console.log(userData.user);
+
   const logouthandler = async () => {
     try {
       const response = await fetch(`${BASE_URL}/logout`, {
         method: "POST", // Change to POST since backend uses post route
         credentials: "include", // Important for sending cookies
       });
-      console.log(response);
+
       if (response.ok) {
         dispatch(removeUser());
         nav("/login");
@@ -33,20 +36,22 @@ const Header = () => {
   return (
     <>
       {/* Top bar */}
-      <div className="flex justify-center items-center py-3 bg-black text-white text-sm gap-3">
-        <p className="text-white/60 hidden md:block font-bold">
-          Book your slot today
-        </p>
-        <div className="inline-flex gap-5 items-center">
-          <p className="cursor-pointer">Click Here 👆</p>
+      {userData?.user && (
+        <div className="flex justify-center items-center py-3 bg-black text-white text-sm gap-3">
+          <p className="text-white/60 hidden md:block font-bold">
+            Book your slot today
+          </p>
+          <div className="inline-flex gap-5 items-center">
+            <p className="cursor-pointer">Click Here 👆</p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Navbar */}
       <nav className="navbar bg-base-100 shadow-md">
         <div className="flex-1 flex items-center">
           {/* Logo */}
-          <Link>
+          <Link to="/">
             <img
               height={80}
               width={80}
@@ -72,62 +77,66 @@ const Header = () => {
         {/* Navigation Menu */}
         <div className="flex-none gap-4">
           {/* Dropdown Menu for Mobile */}
-          <div className="dropdown md:hidden">
-            <button
-              className="btn btn-ghost btn-circle"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              {menuOpen ? (
-                <IoMdClose className="h-6 w-6" />
-              ) : (
-                <IoMdMenu className="h-6 w-6" />
-              )}
-            </button>
-            {menuOpen && (
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+          {userData?.user && (
+            <div className="dropdown md:hidden">
+              <button
+                className="btn btn-ghost btn-circle"
+                onClick={() => setMenuOpen(!menuOpen)}
               >
-                <li>
-                  <a>About Us</a>
-                </li>
-                <li>
-                  <a>Programme</a>
-                </li>
-                <li>
-                  <a>In Media</a>
-                </li>
-                <li>
-                  <a>Testimonial</a>
-                </li>
-                <li>
-                  <a>Fees</a>
-                </li>
-              </ul>
-            )}
-          </div>
+                {menuOpen ? (
+                  <IoMdClose className="h-6 w-6" />
+                ) : (
+                  <IoMdMenu className="h-6 w-6" />
+                )}
+              </button>
+              {menuOpen && (
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+                >
+                  <li>
+                    <a>About Us</a>
+                  </li>
+                  <li>
+                    <a>Programme</a>
+                  </li>
+                  <li>
+                    <a>In Media</a>
+                  </li>
+                  <li>
+                    <a>Testimonial</a>
+                  </li>
+                  <li>
+                    <a>Fees</a>
+                  </li>
+                </ul>
+              )}
+            </div>
+          )}
 
           {/* Links for Desktop */}
-          <ul className="hidden md:flex gap-6 items-center text-black/60 font-semibold">
-            <li>
-              <a>About Us</a>
-            </li>
-            <li>
-              <a>Programme</a>
-            </li>
-            <li>
-              <a>In Media</a>
-            </li>
-            <li>
-              <a>Testimonial</a>
-            </li>
-            <li>
-              <a>Fees</a>
-            </li>
-          </ul>
+          {userData?.user && (
+            <ul className="hidden md:flex gap-6 items-center text-black/60 font-semibold">
+              <li>
+                <a>About Us</a>
+              </li>
+              <li>
+                <a>Programme</a>
+              </li>
+              <li>
+                <a>In Media</a>
+              </li>
+              <li>
+                <a>Testimonial</a>
+              </li>
+              <li>
+                <a>Fees</a>
+              </li>
+            </ul>
+          )}
 
           {/* Profile Dropdown */}
-          <div className="dropdown dropdown-end">
+         {userData?.user &&  <div className="dropdown dropdown-end">
             <button tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
                 <img
@@ -150,7 +159,7 @@ const Header = () => {
                 <a>Settings</a>
               </li>
             </ul>
-          </div>
+          </div>}
         </div>
       </nav>
     </>

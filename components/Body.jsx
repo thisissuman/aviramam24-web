@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
 import FeesAndCharges from "./FeesAndCharges";
-import Footer from "./Footer";
-import Header from "./Header";
 import Hero from "./Hero";
 import InMediaSection from "./InMediaSection";
 import Services from "./Services";
 import TestimonialSection from "./TestiMonialSection";
-import { Outlet } from "react-router";
 import { BASE_URL } from "../src/constant/env";
 import { addUser } from "../src/utils/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+
 const Body = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -20,9 +18,10 @@ const Body = () => {
   const fetchUser = async () => {
     try {
       const response = await fetch(`${BASE_URL}/profile/view`, {
+        method: "GET",
         credentials: "include",
       });
-
+      
       if (!response.ok) {
         if (response.status === 401) {
           nav("/login");
@@ -38,20 +37,18 @@ const Body = () => {
   };
 
   useEffect(() => {
-    if (!userData) {
-      fetchUser();
-    }
+    fetchUser();
+    /* if (!userData) {
+    } */
   }, []);
 
   return (
     <div>
-      <Header />
       <Hero />
       <Services />
       <InMediaSection />
       <TestimonialSection />
       <FeesAndCharges />
-      <Footer />
     </div>
   );
 };
