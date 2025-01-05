@@ -4,48 +4,30 @@ import * as Yup from "yup";
 import background from "../src/assets/background.png";
 import ProfileCard from "./ProfileCard";
 
-const EditProfile = ({ user }) => {
+const EditProfile = ({ user, onSave }) => {
   const initialValues = {
-    firstName: user?.user?.firstName,
-    lastName: user?.user?.lastName,
-    phoneNumber: user?.user?.phoneNumber,
-    email: user?.user?.email,
-    gender: user?.user?.gender,
-  /*   password: "",
-    confirmPassword: "", */
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    phoneNumber: user?.phoneNumber,
+    email: user?.email,
+    gender: user?.gender,
   };
-  console.log(initialValues);
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string(),
-    phoneNumber: Yup.string()
-      .matches(/^\d{10}$/, "Phone number must be 10 digits")
-      .required("Phone number is required"),
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    /* password: Yup.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref("password"), null],
-      "Passwords must match"
-    ), */
+    phoneNumber: Yup.string().matches(
+      /^\d{10}$/,
+      "Phone number must be 10 digits"
+    ),
+    email: Yup.string().email("Invalid email address"),
   });
 
   const handleSubmit = (values) => {
-    // write the logic to make a PUT request to update the user profile
-
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phoneNumber: values.phoneNumber,
-        email: values.email,
-        gender: values.gender,
-        /* password: values.password, */
-      }),
+      body: JSON.stringify(values),
       credentials: "include",
     };
 
@@ -53,6 +35,7 @@ const EditProfile = ({ user }) => {
       .then((response) => {
         if (response.ok) {
           alert("Profile updated successfully");
+          onSave(); // Trigger the slide back to ProfileCard
         } else {
           console.log("Profile update failed");
         }
@@ -63,11 +46,8 @@ const EditProfile = ({ user }) => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-r from-orange-400 to-yellow-300 flex items-center justify-center px-4 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${background})` }}
-    >
-      <div className="max-w-lg w-full bg-white rounded-lg shadow-2xl p-8 md:p-10 scale-90">
+    <div className="flex items-center justify-center h-screen">
+      <div className="max-w-lg w-full bg-white rounded-lg shadow-2xl p-8">
         <h1 className="text-3xl font-bold text-center text-gray-700 mb-6">
           Edit Profile
         </h1>
@@ -189,7 +169,7 @@ const EditProfile = ({ user }) => {
               />
             </div>
             {/* Password */}
-           {/*  <div>
+            {/*  <div>
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-600"
@@ -210,7 +190,7 @@ const EditProfile = ({ user }) => {
               />
             </div> */}
             {/* Confirm Password */}
-           {/*  <div>
+            {/*  <div>
               <label
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-600"
@@ -242,7 +222,6 @@ const EditProfile = ({ user }) => {
           </Form>
         </Formik>
       </div>
-      <ProfileCard user={initialValues} />
     </div>
   );
 };
