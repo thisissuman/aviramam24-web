@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import background from "../src/assets/background.png";
 import ProfileCard from "./ProfileCard";
+import toast, { Toaster } from "react-hot-toast";
 
 const EditProfile = ({ user, onSave }) => {
   const initialValues = {
@@ -23,30 +24,30 @@ const EditProfile = ({ user, onSave }) => {
     email: Yup.string().email("Invalid email address"),
   });
 
-  const handleSubmit = (values) => {
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-      credentials: "include",
-    };
-
-    fetch("http://localhost:3000/profile/edit", requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          alert("Profile updated successfully");
-          onSave(); // Trigger the slide back to ProfileCard
-        } else {
-          console.log("Profile update failed");
-        }
-      })
-      .catch((error) => {
-        console.error("Network error:", error);
+  const handleSubmit = async (values) => {
+    try {
+      const response = await fetch("http://localhost:3000/profile/edit", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+        credentials: "include",
       });
+
+      if (response.ok) {
+        toast.success("Profile updated successfully!");
+        onSave(); // Trigger the slide back to ProfileCard
+      } else {
+        toast.error("Failed to update profile. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Network error. Please check your connection.");
+      console.error("Error:", error);
+    }
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
+      <Toaster />
       <div className="max-w-lg w-full bg-white rounded-lg shadow-2xl p-8">
         <h1 className="text-3xl font-bold text-center text-gray-700 mb-6">
           Edit Profile

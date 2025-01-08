@@ -12,6 +12,8 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.user);
   const [isEditing, setIsEditing] = useState(false);
 
+  const [startTransition, setStartTransition] = useState(false);
+  
   const fetchUser = async () => {
     try {
       const response = await fetch(`${BASE_URL}/profile/view`, {
@@ -43,16 +45,18 @@ const ProfilePage = () => {
   return (
     <div className="relative overflow-hidden h-screen">
       <div
-        className={`absolute inset-0 transition-transform duration-500 ${
+        className={`absolute inset-0 transition-transform  ${
           isEditing ? "-translate-x-full" : "translate-x-0"
         }`}
+        style={{ transitionDuration: "2500ms" }}
       >
         {user && <ProfileCard user={user.user} onEditClick={toggleEdit} />}
       </div>
       <div
-        className={`absolute inset-0 transition-transform duration-500 ${
+        className={`absolute inset-0 transition-transform  ${
           isEditing ? "translate-x-0" : "translate-x-full"
         }`}
+        style={{ transitionDuration: "2500ms" }}
       >
         {user && <EditProfile user={user.user} onSave={toggleEdit} />}
       </div>
