@@ -2,8 +2,13 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import background from "../src/assets/background.png";
+import { useDispatch } from "react-redux";
+import { addUser } from "../src/utils/userSlice";
+import { useNavigate } from "react-router";
 
 const SignUpPage = () => {
+  const dispatch = useDispatch();
+  const nav = useNavigate();
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -44,13 +49,15 @@ const SignUpPage = () => {
         gender: values.gender,
         password: values.password,
       }),
+      credentials: "include",
     };
-    
+
     fetch("http://localhost:3000/signup", requestOptions)
       .then((response) => {
         if (response.ok) {
           // redirect to login page
-          window.location.href = "/login";
+          dispatch(addUser(response.data));
+          nav("/");
         } else {
           console.log("Sign Up failed");
         }
