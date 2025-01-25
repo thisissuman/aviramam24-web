@@ -3,7 +3,7 @@ import FeesAndCharges from "./FeesAndCharges";
 import Hero from "./Hero";
 import InMediaSection from "./InMediaSection";
 import Services from "./Services";
-import TestimonialSection from "./TestiMonialSection";
+import TestimonialSection from "./TestimonialSection";
 import { BASE_URL } from "../src/constant/env";
 import { addUser } from "../src/utils/userSlice";
 import { useDispatch } from "react-redux";
