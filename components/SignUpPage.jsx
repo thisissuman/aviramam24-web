@@ -5,6 +5,7 @@ import background from "../src/assets/background.png";
 import { useDispatch } from "react-redux";
 import { addUser } from "../src/utils/userSlice";
 import { useNavigate } from "react-router";
+import { BASE_URL } from "../src/constant/env";
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const SignUpPage = () => {
       credentials: "include",
     };
 
-    fetch("http://localhost:3000/signup", requestOptions)
+    fetch(BASE_URL + "/signup", requestOptions)
       .then((response) => {
         if (response.ok) {
           // redirect to login page

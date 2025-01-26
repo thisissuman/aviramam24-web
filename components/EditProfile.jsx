@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import background from "../src/assets/background.png";
 import ProfileCard from "./ProfileCard";
 import toast, { Toaster } from "react-hot-toast";
-
+import { BASE_URL } from "../src/constant/env";
 const EditProfile = ({ user, onSave }) => {
   const initialValues = {
     firstName: user?.firstName,
@@ -26,7 +26,7 @@ const EditProfile = ({ user, onSave }) => {
 
   const handleSubmit = async (values) => {
     try {
-      const response = await fetch("http://localhost:3000/profile/edit", {
+      const response = await fetch(BASE_URL + "/profile/edit", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
